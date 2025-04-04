@@ -10,6 +10,7 @@ dependencies:
   - openssl=1.1.1t
   - pip=23.0.1
   - python=3.8.16
+  - qtpy=2.4.1
   - readline=8.2
   - setuptools=65.6.3
   - sqlite=3.41.1
@@ -37,7 +38,7 @@ dependencies:
     - networkx==3.1
     - numpy==1.24.2
     - onnxruntime==1.14.1
-    - opencv-python==4.7.0.72
+    - opencv-python-headless==4.7.0.72
     - packaging==23.0
     - pathspec==0.11.1
     - pillow==9.5.0
@@ -45,15 +46,20 @@ dependencies:
     - protobuf==4.22.1
     - pycocotools==2.0.6
     - pyparsing==3.0.9
+    - pyside6==6.6.3.1
     - python-dateutil==2.8.2
     - pywavelets==1.4.1
     - scikit-image==0.20.0
     - scipy==1.9.1
+    - git+https://github.com/facebookresearch/segment-anything.git
     - simplification==0.6.7
     - six==1.16.0
     - sympy==1.11.1
     - tifffile==2023.3.21
     - tomli==2.0.1
+    - torch==2.1.2
+    - torchvision==0.16.2
+    - tqdm==4.67.1
     - typing-extensions==4.5.0
     - zipp==3.15.0
 prefix: /Users/athena/opt/anaconda3/envs/seg-tool

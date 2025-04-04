@@ -135,3 +135,9 @@ dmypy.json
 dataset/
 models/
 flyer_pages/
+
+# VSCode
+.vscode/
+
+# PyTorch
+*.pth

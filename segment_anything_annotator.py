@@ -1,12 +1,12 @@
-import os
 import argparse
+import os
 import sys
 
-from PyQt5.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication
 
 from salt.editor import Editor
 from salt.interface import ApplicationInterface
-        
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
