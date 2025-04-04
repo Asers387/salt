@@ -88,6 +88,8 @@ class CustomGraphicsView(QGraphicsView):
                 label = 1
             elif event.button() == Qt.RightButton:
                 label = 0
+            else:
+                return
             self.editor.add_click([int(x), int(y)], label, selected_annotations)
         self.imshow(self.editor.display)
 
@@ -242,8 +244,8 @@ class ApplicationInterface(QWidget):
         self.graphics_view.imshow(self.editor.display)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Escape:
-            self.app.quit()
+        # if event.key() == Qt.Key_Escape:
+        #     self.app.quit()
         if event.key() == Qt.Key_A:
             self.prev_image()
             self.get_side_panel_annotations()
@@ -263,8 +265,5 @@ class ApplicationInterface(QWidget):
             self.toggle()
         if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_S:
             self.save_all()
-        elif event.key() == Qt.Key_Space:
-            print("Space pressed")
-            # self.clear_annotations(selected_annotations)
-            # Do something if the space bar is pressed
-            # pass
+        # elif event.key() == Qt.Key_Space:
+        #     self.clear_annotations(selected_annotations)

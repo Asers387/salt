@@ -1,12 +1,19 @@
-from pycocotools import mask
-from skimage import measure
-import json
-import shutil
+import copy
 import itertools
+import json
+import os
+import shutil
+import warnings
+
+import cv2
 import numpy as np
-from simplification.cutil import simplify_coords_vwp
-import os, cv2, copy
 from distinctipy import distinctipy
+from PIL import Image
+from pycocotools import mask
+from simplification.cutil import simplify_coords_vwp
+from skimage import measure
+
+warnings.filterwarnings("ignore", category=Image.DecompressionBombWarning)
 
 
 def init_coco(dataset_folder, image_names, categories, coco_json_path):
@@ -28,13 +35,13 @@ def init_coco(dataset_folder, image_names, categories, coco_json_path):
             {"id": i, "name": category, "supercategory": category}
         )
     for i, image_name in enumerate(image_names):
-        im = cv2.imread(os.path.join(dataset_folder, image_name))
+        im_w, im_h = Image.open(os.path.join(dataset_folder, image_name)).size
         coco_json["images"].append(
             {
                 "id": i,
                 "file_name": image_name,
-                "width": im.shape[1],
-                "height": im.shape[0],
+                "width": im_w,
+                "height": im_h,
             }
         )
     with open(coco_json_path, "w") as f:
@@ -70,7 +77,9 @@ def parse_mask_to_coco(image_id, anno_id, image_mask, category_id, poly=False):
         fortran_binary_mask = np.asfortranarray(image_mask)
         encoded_mask = mask.encode(fortran_binary_mask)
     if poly == True:
-        contours, _ = cv2.findContours(image_mask.astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+            image_mask.astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+        )
     annotation = {
         "id": start_anno_id,
         "image_id": image_id,
@@ -87,7 +96,7 @@ def parse_mask_to_coco(image_id, anno_id, image_mask, category_id, poly=False):
         )
     if poly == True:
         for contour in contours:
-            sc = simplify_coords_vwp(contour[:,0,:], 2).ravel().tolist()
+            sc = simplify_coords_vwp(contour[:, 0, :], 2).ravel().tolist()
             annotation["segmentation"].append(sc)
     return annotation
 
@@ -99,7 +108,7 @@ class DatasetExplorer:
         self.image_names = [
             os.path.split(name)[1]
             for name in self.image_names
-            if name.endswith(".jpg") or name.endswith(".png")
+            if name.endswith(".jpg") or name.endswith(".JPG") or name.endswith(".png")
         ]
         self.coco_json_path = coco_json_path
         if not os.path.exists(coco_json_path):
