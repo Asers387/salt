@@ -8,7 +8,7 @@ ENV PATH="~/miniconda3/bin:$PATH"
 RUN conda init bash
 
 COPY environment.yaml /tmp/environment.yaml
-RUN conda env create -f /tmp/environment.yaml python=3.10
+RUN conda env create -f /tmp/environment.yaml
 RUN echo "conda activate seg-tool" >> ~/.bashrc
 
 RUN apt update
